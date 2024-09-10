@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapCharacter : MonoBehaviour
 {
@@ -8,7 +9,13 @@ public class MapCharacter : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        if(GameManager.manager.currentLevel != "")
+        {
+            // Taso on p‰‰sty l‰pi, kutsutaan sill‰ cleared funktio
+            GameObject.Find(GameManager.manager.currentLevel).GetComponent<LoadLevel>().Cleared(true);
+            transform.position = GameObject.Find(GameManager.manager.currentLevel).transform.GetChild(1).transform.position;
+
+        }
     }
 
     // Update is called once per frame
@@ -18,7 +25,19 @@ public class MapCharacter : MonoBehaviour
         float verticalMove = Input.GetAxis("Vertical") * speed * Time.deltaTime;
         transform.Translate(horizontalMove, verticalMove, 0);
 
-        
+
 
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("LevelTrigger"))
+        {
+            GameManager.manager.currentLevel = collision.gameObject.name;
+
+            SceneManager.LoadScene(collision.gameObject.GetComponent<LoadLevel>().LevelToLoad);
+            
+        }
+    }
+
 }

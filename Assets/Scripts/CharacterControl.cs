@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CharacterControl : MonoBehaviour
 {
@@ -84,6 +85,16 @@ public class CharacterControl : MonoBehaviour
         
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("LevelEnd"))
+        {
+            SceneManager.LoadScene("Map");
+
+        }
+
+
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
