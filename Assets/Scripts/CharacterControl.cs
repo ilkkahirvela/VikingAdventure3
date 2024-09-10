@@ -15,14 +15,9 @@ public class CharacterControl : MonoBehaviour
     public float groundCheckRadius;
     public LayerMask groundCheckLayer;
     public bool grounded;
-
-    public float health;
-    public float previousHealth;
-    public float maxHealth;
-    public float counter;
     public float maxCounter;
-    public Image filler; 
-
+    public Image filler;
+    public float counter;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -73,7 +68,7 @@ public class CharacterControl : MonoBehaviour
 
         if(counter > maxCounter)
         {
-            previousHealth = health;
+            GameManager.manager.previousHealth = GameManager.manager.health;
             counter = 0;
         }
         else
@@ -81,7 +76,7 @@ public class CharacterControl : MonoBehaviour
             counter += Time.deltaTime;
         }
 
-        filler.fillAmount = Mathf.Lerp(previousHealth/maxHealth, health/maxHealth, counter/maxCounter);
+        filler.fillAmount = Mathf.Lerp(GameManager.manager.previousHealth/ GameManager.manager.maxHealth, GameManager.manager.health /GameManager.manager.maxHealth, counter/maxCounter);
         
     }
 
@@ -106,9 +101,9 @@ public class CharacterControl : MonoBehaviour
 
     public void TakeDamage(float dmg)
     {
-        previousHealth = filler.fillAmount * maxHealth;
+        GameManager.manager.previousHealth = filler.fillAmount * GameManager.manager.maxHealth;
         counter = 0;
-        health -= dmg;
+        GameManager.manager.health -= dmg;
 
     }
 }
